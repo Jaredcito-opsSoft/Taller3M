@@ -35,6 +35,10 @@ class OrderService {
   }
 
   async updateOrderStatus(id, estado) {
+    const allowedStatuses = ['PENDIENTE_DE_PAGO', 'PAGADO', 'ENVIADO', 'CANCELADO'];
+    if (!allowedStatuses.includes(estado)) {
+      throw new Error('Estado de pedido no valido.');
+    }
     return await this.orderRepository.updateStatus(id, estado);
   }
 }

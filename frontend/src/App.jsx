@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import './App.css';
 import { useAuth } from './modules/auth/hooks/useAuth';
 import { AuthView } from './modules/auth/components/AuthView';
@@ -15,17 +15,23 @@ import { useOrders } from './modules/orders/hooks/useOrders';
 import { OrderForm } from './modules/orders/components/OrderForm';
 import { OrderTable } from './modules/orders/components/OrderTable';
 
+const AnalyticsDashboard = lazy(() =>
+  import('./modules/analytics/components/AnalyticsDashboard').then((module) => ({
+    default: module.AnalyticsDashboard
+  }))
+);
+
 function App() {
   const { usuario, mensaje: mensajeAuth, registrarse, iniciarSesion, cerrarSesion } = useAuth();
 
   const esAdmin = usuario?.rol === 'ADMIN';
-  const [activeTab, setActiveTab] = useState(esAdmin ? 'usuarios' : 'catalogo');
+  const [activeTab, setActiveTab] = useState(esAdmin ? 'dashboard' : 'catalogo');
   const [productoPreseleccionado, setProductoPreseleccionado] = useState(null);
 
   useEffect(() => {
     if (usuario) {
       if (esAdmin) {
-        setActiveTab('usuarios');
+        setActiveTab('dashboard');
       } else {
         setActiveTab('catalogo');
       }
@@ -110,6 +116,12 @@ function App() {
         {esAdmin ? (
           <>
             <button
+              className={`tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+              onClick={() => setActiveTab('dashboard')}
+            >
+              ◫ Dashboard
+            </button>
+            <button
               className={`tab-btn ${activeTab === 'usuarios' ? 'active' : ''}`}
               onClick={() => setActiveTab('usuarios')}
             >
@@ -157,6 +169,15 @@ function App() {
 
       {/* Tab Content */}
       <main className="tab-content">
+        {/* ADMIN: Dashboard analitico */}
+        {esAdmin && activeTab === 'dashboard' && (
+          <div className="tab-pane">
+            <Suspense fallback={<div className="analytics-state">Preparando dashboard…</div>}>
+              <AnalyticsDashboard usuario={usuario} />
+            </Suspense>
+          </div>
+        )}
+
         {/* ADMIN: Vista Usuarios */}
         {esAdmin && activeTab === 'usuarios' && (
           <div className="tab-pane">

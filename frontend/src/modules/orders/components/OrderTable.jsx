@@ -52,6 +52,8 @@ export function OrderTable({ pedidos, usuarioActual, onUpdateStatus, loading, on
         return <span className="status-badge status-pagado">PAGADO</span>;
       case 'CANCELADO':
         return <span className="status-badge status-cancelado">CANCELADO</span>;
+      case 'ENVIADO':
+        return <span className="status-badge status-enviado">ENVIADO</span>;
       default:
         return <span className="status-badge status-pendiente">PENDIENTE DE PAGO</span>;
     }
@@ -127,6 +129,7 @@ export function OrderTable({ pedidos, usuarioActual, onUpdateStatus, loading, on
                       >
                         <option value="PENDIENTE_DE_PAGO">PENDIENTE DE PAGO</option>
                         <option value="PAGADO">PAGADO</option>
+                        <option value="ENVIADO">ENVIADO</option>
                         <option value="CANCELADO">CANCELADO</option>
                       </select>
                     </div>

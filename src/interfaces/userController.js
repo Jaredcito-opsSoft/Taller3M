@@ -1,6 +1,7 @@
 class UserController {
-  constructor(userService) {
+  constructor(userService, tokenService = null) {
     this.userService = userService;
+    this.tokenService = tokenService;
   }
 
   async getAll(req, res) {
@@ -26,7 +27,8 @@ class UserController {
     try {
       const { email, password } = req.body;
       const user = await this.userService.login(email, password);
-      res.json(user);
+      const token = this.tokenService ? this.tokenService.sign(user) : null;
+      res.json(token ? { ...user, token } : user);
     } catch (error) {
       res.status(401).json({ error: error.message });
     }

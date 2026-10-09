@@ -1,5 +1,7 @@
 # 📘 DOCUMENTACIÓN COMPLETA DEL SISTEMA DE COMERCIO ELECTRÓNICO (TALLER3M)
 
+> Actividad 2.6: la especificación del dashboard, endpoint analítico, arquitectura, instalación y evidencias está disponible en [`docs/ACTIVIDAD_2_6.md`](docs/ACTIVIDAD_2_6.md).
+
 Este documento contiene la especificación completa, arquitectura, manual técnico, modelo de datos, sistema de diseño y guía de uso del sistema e-commerce desarrollado bajo **Arquitectura Hexagonal** en el Backend y **Diseño Modular** en el Frontend.
 
 ---
