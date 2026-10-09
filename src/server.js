@@ -9,11 +9,13 @@ const pool = require('./infrastructure/db');
 const PgUserRepository = require('./infrastructure/repositories/pgUserRepository');
 const PgProductRepository = require('./infrastructure/repositories/pgProductRepository');
 const PgOrderRepository = require('./infrastructure/repositories/pgOrderRepository');
+const NodemailerAdapter = require('./infrastructure/email/NodemailerAdapter');
 
 // 3. Servicios (Capa de aplicacion)
 const UserService = require('./application/userService');
 const ProductService = require('./application/productService');
 const OrderService = require('./application/orderService');
+const OrderNotificationService = require('./application/orderNotificationService');
 
 // 4. Controladores (Adaptadores de entrada)
 const UserController = require('./interfaces/userController');
@@ -30,10 +32,15 @@ app.use(express.json());
 const userRepo = new PgUserRepository();
 const productRepo = new PgProductRepository();
 const orderRepo = new PgOrderRepository();
+const emailAdapter = NodemailerAdapter.fromEnvironment();
+const orderNotificationService = new OrderNotificationService(emailAdapter, {
+  adminEmail: process.env.ADMIN_EMAIL,
+  paymentInstructions: process.env.PAYMENT_INSTRUCTIONS || 'Realiza tu pago por transferencia y conserva tu comprobante.'
+});
 
 const userService = new UserService(userRepo);
 const productService = new ProductService(productRepo);
-const orderService = new OrderService(orderRepo);
+const orderService = new OrderService(orderRepo, orderNotificationService);
 
 const userController = new UserController(userService);
 const productController = new ProductController(productService);

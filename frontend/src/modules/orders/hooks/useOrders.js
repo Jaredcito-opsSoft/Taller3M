@@ -52,9 +52,12 @@ export function useOrders(usuarioActual) {
       }
 
       const nuevoPedido = await orderService.createOrder(payload);
-      notificar(`¡Pedido #${nuevoPedido.id} registrado con éxito!`, 'exito');
+      const delivery = nuevoPedido.notification?.status === 'SENT'
+        ? ' Se enviaron las notificaciones por correo.'
+        : ' El pedido quedó registrado; revisa la configuración de correo si no llega la notificación.';
+      notificar(`¡Pedido #${nuevoPedido.id} registrado como Pendiente de Pago!${delivery}`, 'exito');
       await cargarPedidos();
-      return true;
+      return nuevoPedido;
     } catch (err) {
       notificar(err.message || 'Error al procesar el pedido', 'error');
       return false;

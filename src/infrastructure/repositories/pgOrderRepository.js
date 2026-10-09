@@ -130,7 +130,7 @@ class PgOrderRepository {
       // 1. Insertar cabecera del Pedido
       const orderInsertRes = await client.query(
         `INSERT INTO pedidos (usuario_id, total, estado)
-         VALUES ($1, $2, 'PENDIENTE')
+         VALUES ($1, $2, 'PENDIENTE_DE_PAGO')
          RETURNING id, usuario_id, total, estado, creado_en`,
         [usuarioId, totalCalculado]
       );

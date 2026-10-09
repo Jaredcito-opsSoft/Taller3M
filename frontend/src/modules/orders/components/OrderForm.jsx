@@ -6,6 +6,7 @@ export function OrderForm({ usuarioActual, productos, onCrearPedido, productoIni
   const [cantidad, setCantidad] = useState(1);
   const [enviando, setEnviando] = useState(false);
   const [errorLocal, setErrorLocal] = useState('');
+  const [confirmacion, setConfirmacion] = useState('');
 
   const placeholderImagen = 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=60';
 
@@ -106,8 +107,9 @@ export function OrderForm({ usuarioActual, productos, onCrearPedido, productoIni
           precio_unitario: Number(i.precio)
         }))
       };
-      const exito = await onCrearPedido(payload);
-      if (exito) {
+      const pedido = await onCrearPedido(payload);
+      if (pedido) {
+        setConfirmacion(`Pedido #${pedido.id} creado como Pendiente de Pago. Se enviará la confirmación a ${usuarioActual.email}.`);
         setItems([]);
         setProductoSeleccionado('');
         setCantidad(1);
@@ -129,6 +131,7 @@ export function OrderForm({ usuarioActual, productos, onCrearPedido, productoIni
       </div>
 
       {errorLocal && <div className="alerta error">{errorLocal}</div>}
+      {confirmacion && <div className="alerta exito">{confirmacion}</div>}
 
       <div className="order-builder-box">
         <div className="add-product-row">
@@ -264,7 +267,7 @@ export function OrderForm({ usuarioActual, productos, onCrearPedido, productoIni
               className="btn btn-primary btn-lg"
               disabled={enviando}
             >
-              {enviando ? 'Procesando en PostgreSQL...' : '🛒 Confirmar y Realizar Pedido'}
+              {enviando ? 'Procesando pedido...' : '🛒 Confirmar pedido y recibir instrucciones de pago'}
             </button>
           </div>
         </div>

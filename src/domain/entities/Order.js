@@ -1,5 +1,5 @@
 class Order {
-  constructor({ id = null, usuario_id, total = 0, estado = 'PENDIENTE', items = [], creado_en = null }) {
+  constructor({ id = null, usuario_id, total = 0, estado = 'PENDIENTE_DE_PAGO', items = [], creado_en = null }) {
     this.id = id;
     this.usuario_id = usuario_id;
     this.total = parseFloat(total);

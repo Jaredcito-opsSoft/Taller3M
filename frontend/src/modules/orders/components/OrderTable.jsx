@@ -46,14 +46,14 @@ export function OrderTable({ pedidos, usuarioActual, onUpdateStatus, loading, on
   }
 
   const getStatusBadge = (estado) => {
-    const est = (estado || 'PENDIENTE').toUpperCase();
+    const est = (estado || 'PENDIENTE_DE_PAGO').toUpperCase();
     switch (est) {
       case 'PAGADO':
         return <span className="status-badge status-pagado">PAGADO</span>;
       case 'CANCELADO':
         return <span className="status-badge status-cancelado">CANCELADO</span>;
       default:
-        return <span className="status-badge status-pendiente">PENDIENTE</span>;
+        return <span className="status-badge status-pendiente">PENDIENTE DE PAGO</span>;
     }
   };
 
@@ -122,10 +122,10 @@ export function OrderTable({ pedidos, usuarioActual, onUpdateStatus, loading, on
                       <select
                         id={`status-${pedido.id}`}
                         className="status-select"
-                        value={pedido.estado || 'PENDIENTE'}
+                        value={pedido.estado || 'PENDIENTE_DE_PAGO'}
                         onChange={(e) => onUpdateStatus(pedido.id, e.target.value)}
                       >
-                        <option value="PENDIENTE">PENDIENTE</option>
+                        <option value="PENDIENTE_DE_PAGO">PENDIENTE DE PAGO</option>
                         <option value="PAGADO">PAGADO</option>
                         <option value="CANCELADO">CANCELADO</option>
                       </select>
